@@ -102,7 +102,7 @@ vue
             <button type="submit" class="block w-full bg-purple-600 text-white py-1.5 px-3 rounded transition hover:bg-purple-700">Submit</button>
           </form>
           <!-- Registration Form -->
-          <vee-form v-show="tab === 'register'">
+          <vee-form v-show="tab === 'register'" :validation-schema="schema">
             <!-- Name -->
             <div class="mb-3">
               <label class="inline-block mb-2">Name</label>
@@ -123,12 +123,14 @@ vue
                 "
                 placeholder="Enter Name"
               />
+              <ErrorMessage class="text-red-600" name="name" />
             </div>
             <!-- Email -->
             <div class="mb-3">
               <label class="inline-block mb-2">Email</label>
-              <input
+              <vee-field
                 type="email"
+                name="email"
                 class="
                   block
                   w-full
@@ -245,6 +247,15 @@ export default {
   data() {
     return {
       tab: 'login',
+      schema: {
+        name: 'required|min:3|max:100|alpha_spaces',
+        email: 'required|min:3|max:100|email',
+        age: '',
+        password: '',
+        confirm_password: '',
+        country: '',
+        tos: '',
+      },
     };
   },
   computed: {
