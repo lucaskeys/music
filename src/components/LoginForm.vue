@@ -52,13 +52,23 @@ export default {
     };
   },
   methods: {
-    login(values) {
+    async login(values) {
       this.login_in_submission = true;
       this.login_show_alert = true;
-      // this.login_alert_msg = 'Please wait while we log you into your account.';
 
+      try {
+        await this.$store.dispatch('login', values);
+        // this.login_alert_msg = 'Please wait while we log you into your account.';
+      } catch (error) {
+        this.login_in_submission = true;
+        this.login_alert_variant = 'bg-red-500';
+        this.login_alert_msg = 'Invalid login details';
+        console.log(error);
+        return;
+      }
       this.login_alert_variant = 'bg-green-500';
       this.login_alert_msg = 'Logged in successfully!';
+      window.location.reload();
       console.log(values);
     },
   },

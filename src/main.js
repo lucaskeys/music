@@ -5,11 +5,18 @@ import store from './store';
 import VeeValidatePlugin from './includes/validation';
 import './assets/tailwind.css';
 import './assets/main.css';
-import './includes/firebase';
+import { auth } from './includes/firebase';
 
-let app = createApp(App);
+let app;
 
-app.use(store);
-app.use(router);
-app.mount('#app');
-app.use(VeeValidatePlugin);
+// callback function - arrow function
+auth.onAuthStateChanged(() => {
+  if (!app) {
+    app = createApp(App);
+
+    app.use(store);
+    app.use(router);
+    app.mount('#app');
+    app.use(VeeValidatePlugin);
+  }
+});

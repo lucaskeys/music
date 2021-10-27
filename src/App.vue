@@ -249,6 +249,9 @@ export default {
     AppHeader: AppHeader,
     AuthModal,
   },
+  created() {
+    this.$store.dispatch('initLogin');
+  },
 };
 </script>
 

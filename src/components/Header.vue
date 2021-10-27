@@ -10,12 +10,18 @@ vue
         <!-- Primary Navigation -->
         <ul class="flex flex-row mt-1">
           <!-- Navigation Links -->
-          <li>
+          <li v-if="!userLoggedIn">
             <a class="px-2 text-white" href="#" @click.prevent="toggleAuthModal"> Login / Register </a>
           </li>
-          <li>
-            <a class="px-2 text-white" href="#">Manage</a>
-          </li>
+          <!-- render multiple list items -->
+          <template v-else>
+            <li>
+              <a class="px-2 text-white" href="#">Manage</a>
+            </li>
+            <li>
+              <a class="px-2 text-white" href="#">Logout</a>
+            </li>
+          </template>
         </ul>
       </div>
     </nav>
@@ -23,7 +29,7 @@ vue
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapMutations, mapState } from 'vuex';
 export default {
   name: 'Header',
   methods: {
@@ -31,6 +37,9 @@ export default {
     // toggleModal() {
     //   this.$store.commit('toggleAuthModal');
     // },
+  },
+  computed: {
+    ...mapState(['userLoggedIn']),
   },
 };
 </script>
