@@ -4,11 +4,15 @@ vue
   <header id="header" class="bg-gray-700">
     <nav class="container mx-auto flex justify-start items-center py-5 px-4">
       <!-- App Name -->
-      <a class="text-white font-bold uppercase text-2xl mr-4" href="#">Music</a>
+      <router-link to="/" class="text-white font-bold uppercase text-2xl mr-4">Music</router-link>
 
       <div class="flex flex-grow items-center">
         <!-- Primary Navigation -->
         <ul class="flex flex-row mt-1">
+          <li>
+            <router-link to="/about" class="px-2 text-white">About</router-link>
+          </li>
+
           <!-- Navigation Links -->
           <li v-if="!userLoggedIn">
             <a class="px-2 text-white" href="#" @click.prevent="toggleAuthModal"> Login / Register </a>
@@ -16,10 +20,10 @@ vue
           <!-- render multiple list items -->
           <template v-else>
             <li>
-              <a class="px-2 text-white" href="#">Manage</a>
+              <router-link class="px-2 text-white" to="/manage">Manage</router-link>
             </li>
             <li>
-              <a class="px-2 text-white" href="#">Logout</a>
+              <a class="px-2 text-white" href="#" @click.prevent="signout">Logout</a>
             </li>
           </template>
         </ul>
@@ -29,7 +33,7 @@ vue
 </template>
 
 <script>
-import { mapMutations, mapState } from 'vuex';
+import { mapMutations, mapState, mapActions } from 'vuex';
 export default {
   name: 'Header',
   methods: {
@@ -37,6 +41,7 @@ export default {
     // toggleModal() {
     //   this.$store.commit('toggleAuthModal');
     // },
+    ...mapActions(['signout']),
   },
   computed: {
     ...mapState(['userLoggedIn']),
