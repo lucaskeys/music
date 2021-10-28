@@ -167,7 +167,22 @@
 </template>
 
 <script>
-export default {};
+// need to import the store because it checks for the store before the compoonent is even rendered
+// import store from '@/store';
+export default {
+  name: 'Manage',
+  // beforeRouteEnter(to, from, next) {
+  //   console.log('beforeRoute Enter Guard');
+  //   const currentUser = store.state.userLoggedIn;
+  //   if (currentUser) {
+  //     next();
+  //   } else {
+  //     next({
+  //       name: 'home',
+  //     });
+  //   }
+  // },
+};
 </script>
 
 <style></style>
