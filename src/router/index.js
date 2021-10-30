@@ -46,9 +46,12 @@ const router = createRouter({
 });
 // object that contains information about where the user is navigating to
 // next is a function - wont render component until you have called the next function
+
+// runs on each request made before responding with the link
 router.beforeEach((to, from, next) => {
   // console.log(to.matched);
   // some function is the jS array function - loop through an array and perform a test - if passed, returns true - find out what has the meta auth field - goes through each record (route) and if it doesnt require auth, it will proceed to the next route with no guard
+  // matched contains all the records that match the current
   if (!to.matched.some((record) => record.meta.requiresAuth)) {
     next();
     return;
