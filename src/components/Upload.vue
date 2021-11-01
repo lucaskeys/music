@@ -36,7 +36,7 @@
       <!-- Progess Bars -->
       <div class="mb-4" v-for="upload in uploads" :key="upload.name">
         <!-- File Name -->
-        <div class="font-bold text-sm">
+        <div class="font-bold text-sm" :Class="upload.text_class">
           <i :class="upload.icon"></i>
           {{ upload.name }}
         </div>
@@ -50,7 +50,8 @@
 </template>
 
 <script>
-import { storage } from '@/includes/firebase';
+// songs comes from the export const songs in firebase
+import { storage, auth, songsCollection } from '@/includes/firebase';
 export default {
   name: 'Upload',
   data() {
@@ -84,10 +85,37 @@ export default {
             icon: 'fas fa-spinner fa-spin',
             text_class: '',
           }) - 1;
-        task.on('state_changed', (snapshot) => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          this.uploads[uploadIndex].current_progress = progress;
-        });
+        console.log(uploadIndex);
+        console.log(this.uploads);
+        task.on(
+          'state_changed',
+          (snapshot) => {
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            this.uploads[uploadIndex].current_progress = progress;
+          },
+          (error) => {
+            this.uploads[uploadIndex].variant = 'bg-red-400';
+            this.uploads[uploadIndex].icon = 'fa fa-times';
+            this.uploads[uploadIndex].text_class = 'text-red-400';
+            console.log(error);
+          },
+          async () => {
+            const song = {
+              uid: auth.currentUser.uid,
+              displayName: auth.currentUser.displayName,
+              origin_name: task.snapshot.ref.name,
+              modified_name: task.snapshot.ref.name,
+              genre: '',
+              comment_count: 0,
+            };
+            // .set vs .add (.set will let you add a custom id whereas .add will instruct firebase to generate an auto id)
+            song.url = await task.snapshot.ref.getDownloadURL();
+            await songsCollection.add(song);
+            this.uploads[uploadIndex].variant = 'bg-green-400';
+            this.uploads[uploadIndex].icon = 'fa fa-check';
+            this.uploads[uploadIndex].text_class = 'text-green-400';
+          }
+        );
       });
     },
   },
