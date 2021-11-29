@@ -36,7 +36,7 @@
       <!-- Progess Bars -->
       <div class="mb-4" v-for="upload in uploads" :key="upload.name">
         <!-- File Name -->
-        <div class="font-bold text-sm" :Class="upload.text_class">
+        <div class="font-bold text-sm" :class="upload.text_class">
           <i :class="upload.icon"></i>
           {{ upload.name }}
         </div>
